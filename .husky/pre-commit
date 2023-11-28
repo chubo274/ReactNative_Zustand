@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn lint
+
+# Check commit author
+# authorEmail=`git config --get user.email`
+# authorName=`git config --get user.name`
+# workEmails="email1, email2"
+# workNames="name1, name2"
+
+# if [[ $workEmails != *"$authorEmail"* || $workNames != *"$authorName"* ]];
+# then
+#         echo "Commit email, name and git config email,name differ"
+#         echo "Commit email: "$authorEmail""
+#         echo "Committing email expected: $workEmails"
+#         echo "Commit name: "$authorName""
+#         echo "Committing name expected: $workNames"
+#         exit 1
+# else
+#         exit 0
+# fi
