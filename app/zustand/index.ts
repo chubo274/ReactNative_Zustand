@@ -1,14 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create, StoreApi, UseBoundStore } from 'zustand';
-import { KeyZustand, StoreKey } from './keyZustand';
+import { KeyZustand, StoreKey, useOnlyGetStoreKey } from './keyZustand';
+
+const jsonParseString = (str: string) => {
+    try {
+        return JSON.parse(str);
+    } catch (error) {
+        return str;
+    }
+}
 
 /// AsyncStorage function
 export const getLocal = async (key: keyof StoreKey): Promise<any> => {
     try {
         const jsonValue = await AsyncStorage.getItem(key)
-        if (!jsonValue || jsonValue == null || JSON.parse(jsonValue) == 'undefined' || !JSON.parse(jsonValue))
+        if (jsonValue == null || jsonValue == undefined)
             return undefined
-        return JSON.parse(jsonValue)
+        return jsonParseString(jsonValue)
     } catch (e) {
         console.info('localStoreRepo get Error: ', e)
         return undefined
@@ -17,8 +25,11 @@ export const getLocal = async (key: keyof StoreKey): Promise<any> => {
 
 export const setLocal = async (key: keyof StoreKey, data: any): Promise<boolean> => {
     try {
-        const jsonValue = JSON.stringify(data)
-        await AsyncStorage.setItem(key, jsonValue)
+        if (data != undefined || data != null) {
+            await AsyncStorage.setItem(key, JSON.stringify(data))
+        } else {
+            await AsyncStorage.removeItem(key)
+        }
         return true
     } catch (e) {
         console.info('localStoreRepo set Error: ', e)
@@ -50,7 +61,7 @@ type UseGet = <K extends keyof KeyZustand>(key: K) => KeyZustand[K]
 const StoreZustand: UseBoundStore<StoreApi<IRootState>> = create((set) => ({
     state: {},
     save: (key: keyof KeyZustand, value: any) => {
-        if (key in {} as unknown as StoreKey) {
+        if (Object.keys(useOnlyGetStoreKey).includes(key)) {
             setLocal(key, value)
             return set((rootState: IRootState) => ({
                 state: {
