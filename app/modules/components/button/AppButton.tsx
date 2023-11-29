@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react'
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { ITheme, useAppTheme } from 'shared/theme'
 import { AppText } from 'components/text/AppText'
+import React, { ReactNode } from 'react'
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native'
+import { ITheme, useAppTheme } from 'shared/theme'
 
 interface IAppButton {
     title?: string
@@ -24,9 +24,7 @@ export const AppButton = React.memo((props: IAppButton) => {
         disabled={disabled}
     >
         {leftIcon}
-        <View style={{ margin: 4 }}>
-            <AppText style={[styles.defaultText, textStyle, disabled && { color: theme.color.textColor.disable }]}>{title}</AppText>
-        </View>
+        <AppText style={[styles.defaultText, textStyle, disabled && { color: theme.color.textColor.disable }]}>{title}</AppText>
         {rightIcon}
     </TouchableOpacity>
 })
@@ -41,6 +39,7 @@ const useStyles = (theme: ITheme) => StyleSheet.create({
         justifyContent: 'center'
     },
     defaultText: {
+        marginHorizontal: 4,
         fontFamily: theme.font.Medium,
         fontSize: theme.fontSize.p15,
         color: theme.color.textColor.primary,

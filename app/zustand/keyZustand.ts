@@ -11,6 +11,7 @@ export interface StoreKey {
     ThemeApp: ModeTheme,
 }
 
+// after crate new key interface above, need add default value for this variable. It needed when use Object.keys
 export const useOnlyGetStoreKey: StoreKey = {
     Token: {},
     Localization: LANGUAGES.ENGLISH,

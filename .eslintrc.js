@@ -77,6 +77,7 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-unnecessary-type-constraint': 'off',
         '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
 
         // React
         'react/jsx-props-no-spreading': 'off',
