@@ -1,8 +1,11 @@
-import { login, logout, refreshToken, setTokenUser } from './userTokenRepo'
+import { getPokemon } from './getPokemon'
+import { loginRepo } from './loginRepo'
+import { logoutRepo } from './logoutRepo'
+import { refreshTokenRepo } from './refreshTokenRepo'
 
 export const UserRepository = {
-    login,
-    logout,
-    refreshToken,
-    setTokenUser,
+    logoutRepo,
+    loginRepo,
+    refreshTokenRepo,
+    getPokemon,
 }

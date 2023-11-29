@@ -15,16 +15,16 @@ export interface IParamLogin {
 }
 
 // =====
-export const useLogin = () => {
+export const useGetPokemon = () => {
     // const save = useSave()
     const [data, setData] = useState<UserModel>()
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    
+
     const fetch = useCallback(async (currentParams?: IParams) => {
         !currentParams?.withoutLoading && setIsLoading(true)
         try {
-            const response = await handlerFrist.takeLatest(UserRepository.loginRepo(currentParams?.params!))
+            const response =  await handlerFrist.takeLatest(UserRepository.getPokemon())
             setData(response?.data)
             // save('',response?.data)
             currentParams?.onSuccess?.()

@@ -13,7 +13,7 @@ export const buildMode = {
 }
 
 export const urls = {
-    ditto: 'pokemon?limit=10&offset=0',
+    ditto: 'pokemon/ditto',
     login: 'fakeGetUser',
     logout: 'fakeGetUser',
     refreshToken: 'fakeGetUser',

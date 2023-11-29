@@ -43,7 +43,9 @@ const App = () => {
     });
 
     Object.keys(useOnlyGetStoreKey).forEach((key: any) => {
-        getLocal(key).then((value: any) => save(key, value))
+        getLocal(key).then((value: any) => {
+            save(key, value)
+        })
     })
 
     return <ThemeProvider>

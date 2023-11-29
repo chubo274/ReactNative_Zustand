@@ -1,10 +1,11 @@
+import { logoutRepo } from 'app/data/repositories/user/logoutRepo'
+import { refreshTokenRepo } from 'app/data/repositories/user/refreshTokenRepo'
 import { ResponseModel } from 'app/models/common'
-import { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
-import { emitShowToast } from 'shared/helpers/function'
-import { UserRepository } from 'app/data/repositories/user'
-import { urls } from '../resource'
-import Interceptor, { ResourceType } from './Interceptor'
+import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { emitShowToast, setTokenUser } from 'shared/helpers/function'
 import { getString } from 'shared/localization'
+import { urls } from '../resource'
+import Interceptor from './Interceptor'
 
 type RefreshTokenCallback = (token: string, refreshToken?: string) => void
 
@@ -14,12 +15,10 @@ let refreshSubscribers: RefreshTokenCallback[] = []
 
 export class RetryInterceptor extends Interceptor {
     axiosInstance: AxiosInstance
-    _userRepository: typeof UserRepository
 
-    constructor(axiosInstance: AxiosInstance, resource: string, resourceType: ResourceType) {
-        super(resource, resourceType)
+    constructor(axiosInstance: AxiosInstance) {
+        super()
         this.axiosInstance = axiosInstance
-        this._userRepository = UserRepository
     }
 
     requestFulfilled = (config: InternalAxiosRequestConfig) => {
@@ -38,7 +37,7 @@ export class RetryInterceptor extends Interceptor {
         if (error.config?.url == urls.refreshToken && error.response.status == 422 && !isForceLogout) {
             isForceLogout = true
             isRefreshing = false
-            this._userRepository.logout(true).then((value) => {
+            logoutRepo(true).then((value) => {
                 emitShowToast({ type: 'forceLogout', toastMessage: getString('tokenTimeout'), numberOfLines: 2 })
                 setTimeout(() => {
                     isForceLogout = false
@@ -55,11 +54,10 @@ export class RetryInterceptor extends Interceptor {
                 if (!isRefreshing) {
                     isRefreshing = true
                     // call api refreshToken:
-                    this._userRepository.refreshToken()
-                        .then((response: AxiosResponse) => {
-                            isRefreshing = false;
-                            onRefreshed(response?.data!.access_token, response?.data!.refresh_token);
-                        });
+                    refreshTokenRepo().then((response: AxiosResponse) => {
+                        isRefreshing = false;
+                        onRefreshed(response?.data!.access_token, response?.data!.refresh_token);
+                    });
                 }
 
                 const retryOrigReq = new Promise((resolve, reject) => {
@@ -69,7 +67,7 @@ export class RetryInterceptor extends Interceptor {
                             originalRequest.headers = {}
                         }
                         originalRequest.headers.Authorization = `Bearer ${token}`
-                        await this._userRepository.setTokenUser({ token: token, refreshToken: refreshToken })
+                        setTokenUser({ token: token, refreshToken: refreshToken })
 
                         resolve(this.axiosInstance.request(originalRequest))
                     };

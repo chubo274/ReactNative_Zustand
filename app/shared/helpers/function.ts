@@ -1,3 +1,6 @@
+import { SessionStorage } from 'app/App'
+import StoreZustand from 'app/zustand'
+import { ISessionStorage } from 'app/zustand/interfaceZustand'
 import { IAppToast } from 'components/toast/AppToast'
 import { DeviceEventEmitter } from 'react-native'
 import { EmitType } from './constant'
@@ -15,6 +18,12 @@ export const parseFormData = (data: any, keepFormData?: boolean): FormData => {
         }
     })
     return bodyFormData
+}
+
+export const setTokenUser = (responseParsed: ISessionStorage) => {
+    SessionStorage.token = responseParsed?.token ?? ''
+    SessionStorage.refreshToken = responseParsed?.refreshToken ?? ''
+    return StoreZustand.getState()?.save('Token', SessionStorage)
 }
 
 // parseMaxLengthText

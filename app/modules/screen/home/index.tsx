@@ -1,25 +1,26 @@
-import { useLogin } from 'app/data/hooks/user/useLogin';
+import { useGetPokemon } from 'app/data/hooks/user/useGetPokemon';
 import { backToTopAuthStack } from 'app/modules/navigation';
 import { AppButton } from 'components/button/AppButton';
 import { AppText } from 'components/text/AppText';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native';
 import { ITheme, useAppTheme } from 'shared/theme';
 
 const HomeScreen = () => {
     const theme = useAppTheme();
     const styles = useStyles(theme)
     const { t } = useTranslation()
-    const { fetch } = useLogin()
+    const { fetch: fetchPokemon, data } = useGetPokemon()
+    console.info('data', data)
 
     const onLogout = useCallback(() => {
         backToTopAuthStack()
     }, [])
 
     const callApi = useCallback(() => {
-        fetch({ params: { email: '', password: '' } })
-    }, [fetch])
+        fetchPokemon()
+    }, [fetchPokemon])
 
     return <View style={styles.container}>
         <AppText>Home</AppText>
