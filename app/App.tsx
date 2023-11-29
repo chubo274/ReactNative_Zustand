@@ -14,6 +14,7 @@ import {
 import { ISessionStorage } from 'app/zustand/interfaceZustand';
 import { useOnlyGetStoreKey } from 'app/zustand/keyZustand';
 import { ImageLoading } from 'components/image/ImageLoading';
+import { AppToast } from 'components/toast/AppToast';
 import React, { useRef } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -71,7 +72,7 @@ const App = () => {
             >
                 <Host>
                     <StatusBar barStyle={Platform.select({ android: 'light-content', ios: 'dark-content', })} />
-                    {/* <AppToast /> */}
+                    <AppToast />
                     <RootStack />
                     <ImageLoading />
                 </Host>

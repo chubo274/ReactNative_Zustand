@@ -11,5 +11,6 @@ const en: iLocalization = {
     profile: 'Profile',
     loading: 'Loading...',
     changeLanguage: 'Change language',
+    tokenTimeout: 'Login session expired',
 }
 export default en;

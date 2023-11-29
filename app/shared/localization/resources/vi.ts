@@ -11,5 +11,6 @@ const vi: iLocalization = {
     profile: 'Tài khoản',
     loading: 'Đang tải...',
     changeLanguage: 'Đổi ngôn ngữ',
+    tokenTimeout: 'Hết hạn phiên đăng nhập',
 }
 export default vi;

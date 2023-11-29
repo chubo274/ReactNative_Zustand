@@ -9,4 +9,5 @@ export interface iLocalization {
     profile: string
     loading: string
     changeLanguage: string
+    tokenTimeout: string
 }
